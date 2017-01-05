@@ -3,31 +3,39 @@
   <head>
     <meta charset="utf-8">
     <title>Ben's books</title>
+    <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
     <style>
       html, body {
         height: 100%;
         margin: 0;
         padding: 0;
-        font-family: arial;
+        font-family: "Inconsolata", arial;
+        text-shadow: 3px 3px darkblue;
       }
       #street-view {
         height: 100%;
       }
       header {
-        color: magenta;
-        text-shadow: 0 0 6px black;
+        color: tomato;
         font-size: 2em;
-        left: 0;
-        margin-top: -247px;
+        left: 50%;
+        margin-top: -303px;
+        margin-left: -175px;
         position: fixed;
         text-align: center;
         top: 50%;
-        width: 100%;
         z-index: 10;
       }
+      h2, h3 {
+        margin: 0.5em;
+      }
+      a {
+        color: cornflowerblue;
+        text-shadow: 2px 2px aqua;
+      }
       .chill {
-        color: transparent;
-        text-shadow: 0 0 6px magenta;
+        margin-top: 40px;
+        color: cyan;
       }
     </style>
   </head>
@@ -35,8 +43,11 @@
     <div id="street-view"></div>
     <header>
       <h1> Ben's Books </h1>
-      <h2> 141 ainslie </h2>
-      <h2 class="chill"> come chill </h2>
+      <h2> 145 ainslie st </h2>
+      <h3>brooklyn ny 11221 </h3>
+      <h3> MF 1-9 SS 12-8 </h3>
+      <a href="mailto:ben@bensbooks.nyc">ben@bensbooks.nyc</a>
+      <h2> WE BUY BOOKS! </h2>
     </header>
     <script>
       var panorama;
@@ -46,8 +57,8 @@
             {
               position: {lat: 40.712631, lng: -73.948720},
 
-              pov: {heading: 210, pitch: 30},
-              zoom: 1
+              pov: {heading: 200, pitch: 35},
+              zoom: -1
             });
       }
     </script>
