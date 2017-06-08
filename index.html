@@ -11,7 +11,6 @@
         margin: 0;
         padding: 0;
         font-family: "Libre Baskerville", arial;
-        text-shadow: -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;
       }
       #street-view {
         height: 100%;
@@ -25,11 +24,12 @@
         position: fixed;
         text-align: center;
         top: 50%;
+        text-shadow: -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;
         z-index: 10;
       }
 
       .gm-iv-address {
-          display: none;
+          display: none !important;
       }
 
       @media screen and (max-width: 660px) {
