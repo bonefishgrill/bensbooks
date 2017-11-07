@@ -5,63 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Ben's books</title>
     <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville" rel="stylesheet">
-    <style>
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-        font-family: "Libre Baskerville", arial;
-      }
-      #street-view {
-        height: 100%;
-      }
-      header {
-        color: #800020;
-        font-size: 2em;
-        left: 50%;
-        margin-top: -303px;
-        margin-left: -239px;
-        position: fixed;
-        text-align: center;
-        top: 50%;
-        text-shadow: -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;
-        z-index: 10;
-      }
-
-      .gm-iv-address, .gm-fullscreen-control {
-          display: none !important;
-      }
-
-      @media screen and (max-width: 660px) {
-        header {
-          font-size: 1.3em;
-          margin-top: -228px;
-          margin-left: -154px;
-        }
-      }
-
-      h2, h3 {
-        margin: 0.5em;
-      }
-
-      header a {
-        color: cornflowerblue;
-        text-shadow: -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;
-      }
-      .chill {
-        margin-top: 40px;
-        color: cyan;
-      }
-    </style>
+    <link href="./css/style.css" rel="stylesheet">
   </head>
   <body>
     <div id="street-view"></div>
     <header>
       <h1> Ben's Books </h1>
-      <h2> 145 ainslie st </h2>
-      <h3>brooklyn ny 11221 </h3>
-      <h3> MF 1-9 SS 12-8 </h3>
-      <a href="mailto:ben@bensbooks.nyc">ben@bensbooks.nyc</a>
+      <div class="address">
+        <h2> 145 ainslie st </h2>
+        <h3>brooklyn ny 11221 </h3>
+        <h3> MF 1-9 SS 12-8 </h3>
+        <a href="mailto:ben@bensbooks.nyc">ben@bensbooks.nyc</a>
+      </div>
       <h2> WE BUY BOOKS! </h2>
     </header>
     <script>

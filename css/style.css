@@ -1,0 +1,65 @@
+@font-face {
+  font-family: 'Mine';
+  src: url('../Clearly Gothic Light Regular.ttf') format('truetype');
+  /* src: url('art-nouveau-caps/ArtNouveauCaps.ttf') format('truetype'); */
+  /* src: url('eid_al_fitr_1/EID AL-FITR 1.otf'); */
+  /* src: url('eureka/eureka.ttf') format('truetype'); */
+  /* src: url('monopol/monopol.ttf') format('truetype'); */
+  /* src: url('ringlet/Ringlet.ttf') format('truetype'); */
+  font-weight: normal;
+  font-style: normal;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Mine", arial;
+  background: black;
+}
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#street-view {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+header {
+  color: #800020;
+  font-size: 2em;
+  text-align: center;
+  text-shadow: -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;
+  z-index: 10;
+}
+
+.gm-iv-address, .gm-fullscreen-control {
+  display: none !important;
+}
+
+@media screen and (max-width: 660px) {
+  header {
+    font-size: 1.3em;
+  }
+}
+
+h2, h3 {
+  margin: 0.5em;
+}
+
+.address {
+  margin-bottom: 2em;
+}
+
+header a {
+  color: cornflowerblue;
+  text-shadow: -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white;
+}
+.chill {
+  margin-top: 40px;
+  color: cyan;
+}
