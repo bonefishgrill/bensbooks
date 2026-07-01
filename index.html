@@ -253,12 +253,60 @@
     #gb-close:hover { color: rgba(255,255,255,0.8); }
 
     /* ── Guestbook form ── */
-    #gb-form {
+    /* ── Guestbook body (messages + form) ── */
+    #gb-body {
       flex: 1;
-      padding: 20px 20px 28px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #gb-body::-webkit-scrollbar { width: 4px; }
+    #gb-body::-webkit-scrollbar-track { background: transparent; }
+    #gb-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 2px; }
+
+    /* ── Past messages ── */
+    #gb-messages {
+      padding: 16px 20px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .gb-msg {
+      border-left: 1px solid rgba(245,230,200,0.18);
+      padding-left: 12px;
+    }
+
+    .gb-msg-name {
+      font-family: 'Windsor', Georgia, serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(245,230,200,0.65);
+      margin-bottom: 4px;
+    }
+
+    .gb-msg-text {
+      font-family: Georgia, serif;
+      font-size: 0.83rem;
+      line-height: 1.55;
+      color: rgba(255,255,255,0.75);
+      white-space: pre-wrap;
+    }
+
+    #gb-divider {
+      margin: 18px 20px 0;
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    #gb-form {
+      padding: 16px 20px 28px;
       display: flex;
       flex-direction: column;
       gap: 12px;
+      flex-shrink: 0;
     }
 
     #gb-form input,
@@ -322,14 +370,18 @@
   <!-- Guestbook panel -->
   <div id="gb-panel">
     <div id="gb-header">
-      <h2>Leave a message</h2>
+      <h2>Guestbook</h2>
       <button id="gb-close" onclick="closeGuestbook()">×</button>
     </div>
-    <div id="gb-form">
-      <input id="gb-name" type="text" placeholder="Your name" maxlength="80" autocomplete="off">
-      <textarea id="gb-message" placeholder="Leave a message for Ben's Books…" maxlength="1000"></textarea>
-      <button id="gb-submit" onclick="submitMessage()">Leave a message</button>
-      <div id="gb-status"></div>
+    <div id="gb-body">
+      <div id="gb-messages"></div>
+      <hr id="gb-divider">
+      <div id="gb-form">
+        <input id="gb-name" type="text" placeholder="Your name" maxlength="80" autocomplete="off">
+        <textarea id="gb-message" placeholder="Leave a message for Ben's Books…" maxlength="1000"></textarea>
+        <button id="gb-submit" onclick="submitMessage()">Leave a message</button>
+        <div id="gb-status"></div>
+      </div>
     </div>
   </div>
 
@@ -386,10 +438,66 @@
 
   <script>
     const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfTsv1pSUkIyyKWFDmCiOg_So2IVC8MyumGZxdqOpvNvI7YpA/formResponse';
+    const CSV_URL  = 'https://docs.google.com/spreadsheets/d/1-C2VKojAmCIaGxl-KcNHqGi2Fudt3xTqRsJZtVeT_G4/export?format=csv&gid=59466693';
+
+    function parseCSV(text) {
+      const rows = [];
+      let i = 0;
+      while (i < text.length) {
+        const row = [];
+        while (i < text.length && text[i] !== '\n') {
+          if (text[i] === '"') {
+            i++;
+            let cell = '';
+            while (i < text.length) {
+              if (text[i] === '"' && text[i+1] === '"') { cell += '"'; i += 2; }
+              else if (text[i] === '"') { i++; break; }
+              else { cell += text[i++]; }
+            }
+            row.push(cell);
+          } else {
+            let cell = '';
+            while (i < text.length && text[i] !== ',' && text[i] !== '\n') { cell += text[i++]; }
+            row.push(cell);
+          }
+          if (text[i] === ',') i++;
+        }
+        if (text[i] === '\n') i++;
+        if (row.length > 0 && row.join('').trim()) rows.push(row);
+      }
+      return rows;
+    }
+
+    async function loadMessages() {
+      const container = document.getElementById('gb-messages');
+      try {
+        const res = await fetch(CSV_URL + '&cachebust=' + Date.now());
+        const text = await res.text();
+        const rows = parseCSV(text).slice(1).reverse(); // skip header, newest first
+        container.innerHTML = '';
+        rows.forEach(row => {
+          const name = (row[1] || '').trim();
+          const msg  = (row[2] || '').trim();
+          if (!name && !msg) return;
+          const el = document.createElement('div');
+          el.className = 'gb-msg';
+          el.innerHTML = `<div class="gb-msg-name">${escapeHtml(name)}</div><div class="gb-msg-text">${escapeHtml(msg)}</div>`;
+          container.appendChild(el);
+        });
+        if (!rows.length) container.innerHTML = '<div style="font-family:Georgia,serif;font-size:0.78rem;color:rgba(255,255,255,0.3);padding-left:12px;">No messages yet. Be the first.</div>';
+      } catch {
+        container.innerHTML = '';
+      }
+    }
+
+    function escapeHtml(s) {
+      return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
 
     function openGuestbook() {
       document.getElementById('gb-panel').classList.add('open');
       document.getElementById('gb-tab').style.display = 'none';
+      loadMessages();
     }
 
     function closeGuestbook() {
@@ -418,6 +526,7 @@
         document.getElementById('gb-name').value = '';
         document.getElementById('gb-message').value = '';
         status.textContent = 'Thank you. Your message was received.';
+        setTimeout(loadMessages, 3000);
       } catch {
         status.textContent = 'Something went wrong. Please try again.';
         btn.disabled = false;
