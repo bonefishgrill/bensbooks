@@ -252,20 +252,63 @@
 
     #gb-close:hover { color: rgba(255,255,255,0.8); }
 
-    /* Cusdis body */
-    #gb-body {
+    /* ── Guestbook form ── */
+    #gb-form {
       flex: 1;
-      overflow-y: auto;
-      padding: 16px 20px 24px;
+      padding: 20px 20px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
 
-    #gb-body::-webkit-scrollbar { width: 3px; }
-    #gb-body::-webkit-scrollbar-track { background: transparent; }
-    #gb-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
-
-    #gb-body iframe {
-      min-height: 500px;
+    #gb-form input,
+    #gb-form textarea {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.85);
+      font-family: Georgia, serif;
+      font-size: 0.85rem;
+      padding: 10px 13px;
       width: 100%;
+      outline: none;
+      resize: none;
+      border-radius: 2px;
+    }
+
+    #gb-form input::placeholder,
+    #gb-form textarea::placeholder { color: rgba(255,255,255,0.25); }
+
+    #gb-form input:focus,
+    #gb-form textarea:focus { border-color: rgba(245,230,200,0.3); }
+
+    #gb-form textarea { height: 120px; }
+
+    #gb-submit {
+      background: rgba(245,230,200,0.08);
+      border: 1px solid rgba(245,230,200,0.22);
+      color: rgba(245,230,200,0.75);
+      font-family: 'Windsor', Georgia, serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 11px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    #gb-submit:hover {
+      background: rgba(245,230,200,0.14);
+      color: rgba(245,230,200,1);
+    }
+
+    #gb-submit:disabled { opacity: 0.4; cursor: default; }
+
+    #gb-status {
+      font-size: 0.72rem;
+      text-align: center;
+      color: rgba(245,230,200,0.5);
+      min-height: 1em;
+      font-family: Georgia, serif;
     }
   </style>
 </head>
@@ -282,14 +325,11 @@
       <h2>Leave a message</h2>
       <button id="gb-close" onclick="closeGuestbook()">×</button>
     </div>
-    <div id="gb-body">
-      <div id="cusdis_thread"
-        data-host="https://cusdis.com"
-        data-app-id="06213bb8-61ce-4ad2-8fd0-9dd01b228891"
-        data-page-id="bensbooks-guestbook"
-        data-page-url="https://bensbooks.rip"
-        data-page-title="Ben's Books — Leave a Message"
-      ></div>
+    <div id="gb-form">
+      <input id="gb-name" type="text" placeholder="Your name" maxlength="80" autocomplete="off">
+      <textarea id="gb-message" placeholder="Leave a message for Ben's Books…" maxlength="1000"></textarea>
+      <button id="gb-submit" onclick="submitMessage()">Leave a message</button>
+      <div id="gb-status"></div>
     </div>
   </div>
 
@@ -344,22 +384,44 @@
     draw();
   </script>
 
-  <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
   <script>
+    const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSfTsv1pSUkIyyKWFDmCiOg_So2IVC8MyumGZxdqOpvNvI7YpA/formResponse';
+
     function openGuestbook() {
       document.getElementById('gb-panel').classList.add('open');
       document.getElementById('gb-tab').style.display = 'none';
-      // Wait for panel slide-in to finish, then render/re-render Cusdis
-      setTimeout(function() {
-        if (window.CUSDIS) {
-          window.CUSDIS.renderTo(document.getElementById('cusdis_thread'));
-        }
-      }, 380);
     }
 
     function closeGuestbook() {
       document.getElementById('gb-panel').classList.remove('open');
       document.getElementById('gb-tab').style.display = '';
+    }
+
+    async function submitMessage() {
+      const name = document.getElementById('gb-name').value.trim();
+      const message = document.getElementById('gb-message').value.trim();
+      const status = document.getElementById('gb-status');
+      const btn = document.getElementById('gb-submit');
+
+      if (!name || !message) { status.textContent = 'Please fill in both fields.'; return; }
+
+      btn.disabled = true;
+      status.textContent = 'Sending…';
+
+      try {
+        await fetch(FORM_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: `entry.1706813826=${encodeURIComponent(name)}&entry.1844150392=${encodeURIComponent(message)}`
+        });
+        document.getElementById('gb-name').value = '';
+        document.getElementById('gb-message').value = '';
+        status.textContent = 'Thank you. Your message was received.';
+      } catch {
+        status.textContent = 'Something went wrong. Please try again.';
+        btn.disabled = false;
+      }
     }
   </script>
 </body>
