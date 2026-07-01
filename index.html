@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>R.I.P. Ben's Books</title>
+  <style>
+    @font-face {
+      font-family: 'Windsor';
+      src: url('Windsor Light Regular.otf') format('opentype');
+    }
+  </style>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: #000;
+      overflow: hidden;
+    }
+
+    #photo {
+      position: fixed;
+      inset: 0;
+      background: url('IMG_3921.JPG') center center / 85% auto no-repeat;
+      filter: grayscale(40%) brightness(0.55);
+    }
+
+    #candles-wrap {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      user-select: none;
+    }
+
+    #center {
+      position: fixed;
+      left: 18%;
+      bottom: 12%;
+      user-select: none;
+    }
+
+    /* ── Candle row ── */
+    .candles {
+      display: flex;
+      gap: clamp(16px, 3vw, 48px);
+      align-items: flex-end;
+      margin-bottom: 8px;
+    }
+
+    .candle {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Flame */
+    .flame {
+      position: relative;
+      width: 14px;
+      height: 22px;
+    }
+
+    .flame-inner {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 10px;
+      height: 18px;
+      background: radial-gradient(ellipse at 50% 80%, #fff 0%, #ffe566 30%, #ff9500 70%, transparent 100%);
+      border-radius: 50% 50% 30% 30% / 60% 60% 40% 40%;
+      filter: blur(0.5px);
+      transform-origin: bottom center;
+      animation: flame-flicker var(--dur, 1.8s) ease-in-out infinite alternate;
+    }
+
+    .flame-outer {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 22px;
+      background: radial-gradient(ellipse at 50% 80%, rgba(255,180,0,0.6) 0%, rgba(255,80,0,0.3) 60%, transparent 100%);
+      border-radius: 50% 50% 30% 30% / 60% 60% 40% 40%;
+      filter: blur(2px);
+      transform-origin: bottom center;
+      animation: flame-flicker var(--dur, 1.8s) ease-in-out infinite alternate;
+    }
+
+    @keyframes flame-flicker {
+      0%   { transform: translateX(-50%) scaleX(1)    scaleY(1)    rotate(-1deg); opacity: 1; }
+      20%  { transform: translateX(-50%) scaleX(0.88) scaleY(1.06) rotate(1deg);  opacity: 0.95; }
+      40%  { transform: translateX(-50%) scaleX(1.05) scaleY(0.94) rotate(-2deg); opacity: 1; }
+      60%  { transform: translateX(-50%) scaleX(0.92) scaleY(1.08) rotate(1.5deg);opacity: 0.92; }
+      80%  { transform: translateX(-50%) scaleX(1.03) scaleY(0.97) rotate(-1deg); opacity: 1; }
+      100% { transform: translateX(-50%) scaleX(0.95) scaleY(1.04) rotate(2deg);  opacity: 0.96; }
+    }
+
+    /* Wick */
+    .wick {
+      width: 2px;
+      height: 6px;
+      background: #555;
+      border-radius: 1px;
+    }
+
+    /* Wax body */
+    .wax {
+      width: clamp(12px, 2vw, 20px);
+      height: clamp(40px, 7vh, 70px);
+      background: linear-gradient(to right, #e8dcc8, #f5ede0, #d4c9b4);
+      border-radius: 2px 2px 1px 1px;
+      box-shadow: 0 0 8px rgba(255,180,60,0.3);
+    }
+
+    /* ── Text ── */
+    .text-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      animation: text-flicker 4s infinite;
+    }
+
+    .rip {
+      font-family: 'Windsor', 'Georgia', serif;
+      font-size: clamp(1.5rem, 4.5vw, 4rem);
+      letter-spacing: 0.15em;
+      color: #f5e6c8;
+      text-shadow:
+        0 0 20px rgba(255,200,80,0.9),
+        0 0 60px rgba(255,140,20,0.5),
+        0 0 120px rgba(255,80,0,0.25);
+    }
+
+    .name {
+      font-family: 'Windsor', 'Georgia', serif;
+      font-size: clamp(0.7rem, 2vw, 1.6rem);
+      letter-spacing: 0.1em;
+      color: #f5e6c8;
+      text-shadow:
+        0 0 12px rgba(255,200,80,0.7),
+        0 0 40px rgba(255,140,20,0.35);
+    }
+
+    .years {
+      font-family: 'Windsor', 'Georgia', serif;
+      font-size: clamp(0.45rem, 1.1vw, 0.9rem);
+      letter-spacing: 0.12em;
+      color: rgba(245,230,200,0.75);
+      text-shadow:
+        0 0 10px rgba(255,200,80,0.5),
+        0 0 30px rgba(255,140,20,0.25);
+    }
+
+    @keyframes text-flicker {
+      0%   { opacity: 1; }
+      4%   { opacity: 0.92; }
+      8%   { opacity: 1; }
+      15%  { opacity: 0.96; }
+      19%  { opacity: 1; }
+      42%  { opacity: 0.85; }
+      44%  { opacity: 1; }
+      73%  { opacity: 0.88; }
+      75%  { opacity: 1; }
+      100% { opacity: 1; }
+    }
+    #snow {
+      position: fixed;
+      inset: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 3;
+    }
+  </style>
+</head>
+<body>
+  <div id="photo"></div>
+  <canvas id="snow"></canvas>
+
+
+  <div id="center">
+    <div class="text-block">
+      <div class="rip">R.I.P.</div>
+      <div class="name">Ben's Books</div>
+      <div class="years">(2013 – 2020)</div>
+    </div>
+
+  </div>
+  <script>
+    const canvas = document.getElementById('snow');
+    const ctx = canvas.getContext('2d');
+
+    function resize() {
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    const FLAKES = 140;
+    const flakes = Array.from({ length: FLAKES }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      r: Math.random() * 2.5 + 0.8,
+      speed: Math.random() * 0.8 + 0.3,
+      drift: Math.random() * 0.5 - 0.25,
+      opacity: Math.random() * 0.55 + 0.2,
+      wobble: Math.random() * Math.PI * 2,
+      wobbleSpeed: Math.random() * 0.01 + 0.003,
+    }));
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      flakes.forEach(f => {
+        f.wobble += f.wobbleSpeed;
+        f.x += f.drift + Math.sin(f.wobble) * 0.3;
+        f.y += f.speed;
+        if (f.y > canvas.height) {
+          f.y = -4;
+          f.x = Math.random() * canvas.width;
+        }
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${f.opacity})`;
+        ctx.fill();
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
+  </script>
+</body>
+</html>
