@@ -175,12 +175,118 @@
       pointer-events: none;
       z-index: 3;
     }
+
+    /* ── Guestbook tab ── */
+    #gb-tab {
+      position: fixed;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      background: rgba(255,255,255,0.08);
+      color: rgba(245,230,200,0.6);
+      font-family: 'Windsor', Georgia, serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 14px 8px;
+      cursor: pointer;
+      border-left: 1px solid rgba(255,255,255,0.12);
+      transition: background 0.2s, color 0.2s;
+      user-select: none;
+    }
+
+    #gb-tab:hover {
+      background: rgba(255,255,255,0.14);
+      color: rgba(245,230,200,0.9);
+    }
+
+    /* ── Guestbook panel ── */
+    #gb-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 380px;
+      height: 100%;
+      background: rgba(8,6,4,0.94);
+      border-left: 1px solid rgba(255,255,255,0.1);
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+      backdrop-filter: blur(6px);
+    }
+
+    #gb-panel.open { transform: translateX(0); }
+
+    #gb-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      flex-shrink: 0;
+    }
+
+    #gb-header h2 {
+      font-family: 'Windsor', Georgia, serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(245,230,200,0.7);
+      font-weight: normal;
+    }
+
+    #gb-close {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.4);
+      font-size: 1.3rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0;
+    }
+
+    #gb-close:hover { color: rgba(255,255,255,0.8); }
+
+    /* Cusdis body */
+    #gb-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 20px 24px;
+    }
+
+    #gb-body::-webkit-scrollbar { width: 3px; }
+    #gb-body::-webkit-scrollbar-track { background: transparent; }
+    #gb-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
   </style>
 </head>
 <body>
   <div id="photo"></div>
   <canvas id="snow"></canvas>
 
+  <!-- Guestbook tab -->
+  <div id="gb-tab" onclick="openGuestbook()">Guestbook</div>
+
+  <!-- Guestbook panel -->
+  <div id="gb-panel">
+    <div id="gb-header">
+      <h2>Leave a message</h2>
+      <button id="gb-close" onclick="closeGuestbook()">×</button>
+    </div>
+    <div id="gb-body">
+      <div id="cusdis_thread"
+        data-host="https://cusdis.com"
+        data-app-id="06213bb8-61ce-4ad2-8fd0-9dd01b228891"
+        data-page-id="bensbooks-guestbook"
+        data-page-url="https://bensbooks.rip"
+        data-page-title="Ben's Books — Leave a Message"
+      ></div>
+    </div>
+  </div>
 
   <div id="center">
     <div class="text-block">
@@ -231,6 +337,20 @@
       requestAnimationFrame(draw);
     }
     draw();
+  </script>
+
+  <script async defer src="https://cusdis.com/js/cusdis.es.js"></script>
+  <script>
+    function openGuestbook() {
+      document.getElementById('gb-panel').classList.add('open');
+      document.getElementById('gb-tab').style.display = 'none';
+      if (window.CUSDIS) window.CUSDIS.renderTo(document.getElementById('cusdis_thread'));
+    }
+
+    function closeGuestbook() {
+      document.getElementById('gb-panel').classList.remove('open');
+      document.getElementById('gb-tab').style.display = '';
+    }
   </script>
 </body>
 </html>
