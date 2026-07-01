@@ -262,6 +262,11 @@
     #gb-body::-webkit-scrollbar { width: 3px; }
     #gb-body::-webkit-scrollbar-track { background: transparent; }
     #gb-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+
+    #gb-body iframe {
+      min-height: 500px;
+      width: 100%;
+    }
   </style>
 </head>
 <body>
@@ -344,7 +349,12 @@
     function openGuestbook() {
       document.getElementById('gb-panel').classList.add('open');
       document.getElementById('gb-tab').style.display = 'none';
-      if (window.CUSDIS) window.CUSDIS.renderTo(document.getElementById('cusdis_thread'));
+      // Wait for panel slide-in to finish, then render/re-render Cusdis
+      setTimeout(function() {
+        if (window.CUSDIS) {
+          window.CUSDIS.renderTo(document.getElementById('cusdis_thread'));
+        }
+      }, 380);
     }
 
     function closeGuestbook() {
