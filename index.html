@@ -176,31 +176,31 @@
       z-index: 3;
     }
 
-    /* ── Guestbook tab ── */
+    /* ── Guestbook button ── */
     #gb-tab {
       position: fixed;
-      right: 0;
-      top: 50%;
-      transform: translateY(-50%);
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
       z-index: 10;
-      writing-mode: vertical-rl;
-      text-orientation: mixed;
-      background: rgba(255,255,255,0.08);
-      color: rgba(245,230,200,0.6);
       font-family: 'Windsor', Georgia, serif;
-      font-size: 0.65rem;
-      letter-spacing: 0.18em;
+      font-size: 0.78rem;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
-      padding: 14px 8px;
+      color: rgba(245,230,200,0.75);
+      background: transparent;
+      border: 1px solid rgba(245,230,200,0.25);
+      padding: 12px 28px;
       cursor: pointer;
-      border-left: 1px solid rgba(255,255,255,0.12);
-      transition: background 0.2s, color 0.2s;
       user-select: none;
+      transition: color 0.3s, border-color 0.3s, text-shadow 0.3s;
+      text-shadow: 0 0 18px rgba(255,200,80,0.4);
     }
 
     #gb-tab:hover {
-      background: rgba(255,255,255,0.14);
-      color: rgba(245,230,200,0.9);
+      color: rgba(245,230,200,1);
+      border-color: rgba(245,230,200,0.55);
+      text-shadow: 0 0 28px rgba(255,200,80,0.8), 0 0 60px rgba(255,140,20,0.4);
     }
 
     /* ── Guestbook panel ── */
